@@ -62,7 +62,12 @@ exports.getNotebook = async (request, h) => {
     try {
 
         const { id } = request.params;
-        let notebook = await Notebooks.findOne({ where: { id }, include: [Users] });
+        let notebook = await Notebooks.findOne({
+            where: { id }, include: [{
+                model: Users,
+                attributes: ['name', 'email']
+            }]
+        });
 
         if (notebook) {
             return {

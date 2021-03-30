@@ -34,7 +34,12 @@ exports.getNote = async (request, h) => {
     try {
 
         let { id } = request.params;
-        let note = await Notes.findOne({ where: { id }, include: [Users, Notebooks], attributes: { exclude: ['password'] } });
+        let note = await Notes.findOne({
+            where: { id }, include: [{
+                model: Users,
+                attributes: ['name', 'email']
+            }, Notebooks]
+        });
         if (note) {
             return {
                 status: true,
@@ -109,7 +114,12 @@ exports.updateNote = async (request, h) => {
 
 exports.findAllNotes = async (request, h) => {
     try {
-        let notes = await Notes.findAll({ include: [Users, Notebooks], attributes: { exclude: ['password'] } });
+        let notes = await Notes.findAll({
+            include: [{
+                model: Users,
+                attributes: ['name', 'email']
+            }, Notebooks]
+        });
         return {
             status: true,
             notes
